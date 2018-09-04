@@ -14,22 +14,24 @@ npm install
 
 **You will need to follow the official [installation guide](https://github.com/react-community/react-native-maps/blob/master/docs/installation.md) to configure the application.**
 
-## To run this application
-Use
-
-```
-react-native start
-```
-
-or
-
+## To run this application in development mode
+Execute
 ```
 react-native run-ios
 ```
-If you are on Mac and want to run it on a simulator.
+If you are running this application for the first time.
+
+In future builds, you can just run
+```
+react-native start
+```
+to start the server for live reloading.
 
 ### Alternitavely,
-You can run it either on a simulator or on your local device through Xcode. Just make sure to use the `.xcworkspace` project file instead of the `.xcodeproj` one.
+You can run it either on a simulator or on your local device through Xcode. Just make sure to use the `/ios/*.xcworkspace` project file instead of the `.xcodeproj` one.
+
+## To build your app for production,
+Follow facebook's [official guide](https://facebook.github.io/react-native/docs/running-on-device).
 
 ---
 
