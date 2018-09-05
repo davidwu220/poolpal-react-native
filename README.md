@@ -4,7 +4,9 @@ React native version of my PoolPal app
 
 Uber-like ride-sharing application created with `react-native` and `react-native-map`.
 
-![Uber-like animation](https://github.com/davidwu220/poolpal-react-native/blob/master/uber-animation-small.gif)
+<p align="center">
+    <img src="https://github.com/davidwu220/poolpal-react-native/blob/master/uber-animation-small.gif" alt="Uber-like animation" />
+</p>
 
 Had to make some adjustments to the underlying components for the application to work properly.
 
