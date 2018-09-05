@@ -67,14 +67,14 @@ export default class LocationSearchHeader extends Component {
 
     return {
       hoverbar: {
-        top: expanded ? 0 : 96,
+        top: expanded ? 0 : 76,
         left: expanded ? 0 : 24,
         height: expanded ? 136 : 56,
         width: expanded ? windowWidth : width,
         shadowRadius: expanded ? 10 / 2 : 60 / 2,
       },
       square: {
-        top: expanded ? 109 : 96 + 56 / 2 - SQUARE_SIZE / 2,
+        top: expanded ? 109 : 76 + 56 / 2 - SQUARE_SIZE / 2,
         left: expanded ? 29 : 24 + 22,
       },
       destinationBox: {
@@ -86,7 +86,7 @@ export default class LocationSearchHeader extends Component {
       },
       destinationText: {
         left: expanded ? 65 : 75,
-        top: expanded ? 103 : 112,
+        top: expanded ? 103 : 92,
         fontSize: expanded ? 15 : 20,
         color: expanded ? '#A4A4AC' : '#525760',
         opacity: (expanded && destinationText.length !== 0) ? 0 : 1,

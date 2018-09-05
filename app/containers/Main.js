@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Image } from 'react-native'
+import { Dimensions, StyleSheet, View, Image } from 'react-native'
 import { connect } from 'react-redux'
 import { Actions } from 'react-native-router-flux'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
@@ -12,10 +12,15 @@ import {
   NavigationIcon,
 } from '../components'
 
+import MapViewDirections from 'react-native-maps-directions';
+
 const mapStateToProps = (state) => ({
   recentLocations: state.recentLocations,
   shortcutLocations: state.recentLocations.slice(0, 3),
 })
+
+const GOOGLE_MAPS_API_KEY = "AIzaSyCjoSnExkHFCAHQayRetiW4w-dnSWCdeR0";
+const { width, height } = Dimensions.get('window');
 
 class Main extends Component {
 
@@ -23,9 +28,18 @@ class Main extends Component {
     searchResultsOpen: false,
     sourceText: 'Work',
     destinationText: '',
+    coordinates: [
+      {
+        latitude: 34.031684,
+        longitude: -118.457605
+      }
+    ],
   }
 
+  mapView = null;
+
   componentDidMount() {
+
     navigator.geolocation.getCurrentPosition(
       ({coords}) => {
         const {latitude, longitude} = coords
@@ -62,6 +76,15 @@ class Main extends Component {
     this.setState({destinationText})
   }
 
+  onMapPress = (e) => {
+    this.setState({
+      coordinates: [
+        ...this.state.coordinates,
+        e.nativeEvent.coordinate,
+      ],
+    });
+  }
+
   render() {
     const {recentLocations, shortcutLocations} = this.props
     const {searchResultsOpen, sourceText, destinationText, region, position} = this.state
@@ -80,18 +103,23 @@ class Main extends Component {
           onSourceTextChange={this.onSourceTextChange}
           onDestinationTextChange={this.onDestinationTextChange}
         />
-        <LocationButtonGroup
+        {/* <LocationButtonGroup
           visible={!searchResultsOpen}
           locations={shortcutLocations}
-        />
+        /> */}
         <LocationSearchResults visible={searchResultsOpen}>
           <SearchResultsList list={recentLocations} />
         </LocationSearchResults>
         <MapView
           provider={PROVIDER_GOOGLE}
           style={styles.map}
-          region={region}
+          initialRegion={region}
+          onPress={this.onMapPress}
+          ref={c => this.mapView = c}
         >
+          {this.state.coordinates.map((coordinate, index) =>
+            <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} />
+          )}
           {position && (
             <MapView.Circle
               center={position}
@@ -108,6 +136,24 @@ class Main extends Component {
               fillColor={'#3594BC'}
             />
           )}
+          <MapViewDirections
+            origin={position}
+            waypoints={ this.state.coordinates.slice(1, -1) }
+            optimizeWaypoints={true}
+            destination={this.state.coordinates[this.state.coordinates.length-1]}
+            apikey={GOOGLE_MAPS_API_KEY}
+            strokeWidth={3}
+            onReady={(result) => {
+              this.mapView.fitToCoordinates(result.coordinates, {
+                edgePadding: {
+                  right: (width / 20),
+                  bottom: (height / 20),
+                  left: (width / 20),
+                  top: (height / 3.5),
+                }
+              });
+            }}
+          />
         </MapView>
       </View>
     )
@@ -120,9 +166,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#EEE',
   },
   map: {
+    ...StyleSheet.absoluteFillObject,
     flex: 1,
-    zIndex: -1,
-  }
+    zIndex: -1
+  },
 })
 
 export default connect(mapStateToProps)(Main);

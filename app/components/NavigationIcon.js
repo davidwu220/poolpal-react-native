@@ -37,7 +37,7 @@ export default class NavigationIcon extends Component {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 36,
+    top: 32,
     left: 22,
     zIndex: 10,
   },
