@@ -3,6 +3,7 @@ import { Dimensions, StyleSheet, View, Image } from 'react-native'
 import { connect } from 'react-redux'
 import { Actions } from 'react-native-router-flux'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
+import AssetMap from '../config/AssetMap'
 
 import {
   LocationButtonGroup,
@@ -93,7 +94,7 @@ class Main extends Component {
       <View style={styles.container}>
         <NavigationIcon
           icon={searchResultsOpen ? 'arrow-left' : 'hamburger'}
-          onPress={this.toggleSearchResults}
+          onPress={searchResultsOpen ? this.toggleSearchResults : Actions.drawerOpen }
         />
         <LocationSearchHeader
           onPress={this.toggleSearchResults}
@@ -120,25 +121,25 @@ class Main extends Component {
           {this.state.coordinates.map((coordinate, index) =>
             <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} />
           )}
-          {position && (
+          {/* {position && (
             <MapView.Circle
               center={position}
               radius={300}
               strokeColor={'transparent'}
               fillColor={'rgba(112,185,213,0.30)'}
             />
-          )}
+          )} */}
           {position && (
-            <MapView.Circle
-              center={position}
-              radius={100}
-              strokeColor={'transparent'}
-              fillColor={'#3594BC'}
+            <MapView.Marker
+              image={AssetMap['curr-pos']}
+              coordinate={position}
+              flat={true}
+              anchor={{x: 0.5, y: 0.3}}
             />
           )}
           <MapViewDirections
             origin={position}
-            waypoints={ this.state.coordinates.slice(1, -1) }
+            waypoints={ this.state.coordinates.length >= 2 ? this.state.coordinates : this.state.coordinates.slice(1, -1) }
             optimizeWaypoints={true}
             destination={this.state.coordinates[this.state.coordinates.length-1]}
             apikey={GOOGLE_MAPS_API_KEY}
