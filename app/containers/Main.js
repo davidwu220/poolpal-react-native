@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
-import { Dimensions, StyleSheet, View, Image } from 'react-native'
+import { Dimensions, StyleSheet, View, Image, SafeAreaView } from 'react-native'
 import { connect } from 'react-redux'
 import { Actions } from 'react-native-router-flux'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
 import AssetMap from '../config/AssetMap'
 
 import {
-  LocationButtonGroup,
   LocationSearchHeader,
   LocationSearchResults,
   SearchResultsList,
@@ -30,10 +29,10 @@ class Main extends Component {
     sourceText: 'Work',
     destinationText: '',
     coordinates: [
-      {
-        latitude: 34.031684,
-        longitude: -118.457605
-      }
+      // {
+      //   latitude: 34.031684,
+      //   longitude: -118.457605
+      // }
     ],
   }
 
@@ -60,6 +59,20 @@ class Main extends Component {
       },
       (error) => alert(JSON.stringify(error)),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    )
+    navigator.geolocation.watchPosition(
+      ({coords}) => {
+        const {latitude, longitude} = coords
+
+        this.setState({
+          position: {
+            latitude,
+            longitude,
+          }
+        })
+      },
+      (error) => alert(JSON.stringify(error)),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 0}
     )
   }
 
@@ -130,7 +143,7 @@ class Main extends Component {
             />
           )} */}
           {position && (
-            <MapView.Marker
+            <MapView.Marker.Animated
               image={AssetMap['curr-pos']}
               coordinate={position}
               flat={true}

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, ViewPropTypes, Button } from 'react-native';
+import { StyleSheet, Text, View, ViewPropTypes, Button, SafeAreaView } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
 const styles = StyleSheet.create({
@@ -27,13 +27,15 @@ class DrawerContent extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        {/* <Text>Drawer Content</Text>
-        <Button onPress={Actions.closeDrawer}>Back</Button> */}
-        <Button title="Close" onPress={Actions.pop} />
-        <Text>Title: {this.props.title} Name: {this.props.name}</Text>
-        <Button title="Learn More" onPress={Actions.second} />
-      </View>
+      <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+        <View style={styles.container}>
+          {/* <Text>Drawer Content</Text>
+          <Button onPress={Actions.closeDrawer}>Back</Button> */}
+          <Button title="Close" onPress={Actions.pop} />
+          <Text>Title: {this.props.title} Name: {this.props.name}</Text>
+          <Button title="Learn More" onPress={Actions.second} />
+        </View>
+      </SafeAreaView>
     );
   }
 }
