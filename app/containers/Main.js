@@ -29,12 +29,8 @@ class Main extends Component {
     searchResultsOpen: false,
     sourceText: 'Work',
     destinationText: '',
-    coordinates: [
-      // {
-      //   latitude: 34.031684,
-      //   longitude: -118.457605
-      // }
-    ],
+    coordinates: [],
+    go: false
   }
 
   mapView = null;
@@ -98,17 +94,26 @@ class Main extends Component {
   }
 
   onMapPress = (e) => {
-    this.setState({
-      coordinates: [
-        ...this.state.coordinates,
-        e.nativeEvent.coordinate,
-      ],
-    });
+    if(this.state.coordinates.length === 0) {
+      this.setState({
+        coordinates: [
+          this.state.position,
+          e.nativeEvent.coordinate,
+        ],
+      });
+    } else {
+      this.setState({
+        coordinates: [
+          ...this.state.coordinates,
+          e.nativeEvent.coordinate,
+        ],
+      });
+    }
   }
 
   render() {
     const {recentLocations, shortcutLocations} = this.props
-    const {searchResultsOpen, sourceText, destinationText, region, position} = this.state
+    const {searchResultsOpen, sourceText, destinationText, region, position, go} = this.state
 
     return (
       <View style={styles.container}>
@@ -157,24 +162,26 @@ class Main extends Component {
               anchor={{x: 0.5, y: 0.3}}
             />
           )}
-          <MapViewDirections
-            origin={position}
-            waypoints={ this.state.coordinates.length >= 2 ? this.state.coordinates : this.state.coordinates.slice(1, -1) }
-            optimizeWaypoints={true}
-            destination={this.state.coordinates[this.state.coordinates.length-1]}
-            apikey={GOOGLE_MAPS_API_KEY}
-            strokeWidth={3}
-            onReady={(result) => {
-              this.mapView.fitToCoordinates(result.coordinates, {
-                edgePadding: {
-                  right: (width / 20),
-                  bottom: (height / 20),
-                  left: (width / 20),
-                  top: (height / 3.5),
-                }
-              });
-            }}
-          />
+          {go && (
+            <MapViewDirections
+              origin={ this.state.coordinates[0] }
+              waypoints={ (this.state.coordinates.length > 2) ? this.state.coordinates.slice(1, -1) : null }
+              optimizeWaypoints={true}
+              destination={this.state.coordinates[this.state.coordinates.length-1]}
+              apikey={GOOGLE_MAPS_API_KEY}
+              strokeWidth={3}
+              onReady={(result) => {
+                this.mapView.fitToCoordinates(result.coordinates, {
+                  edgePadding: {
+                    right: (width / 20),
+                    bottom: (height / 20),
+                    left: (width / 20),
+                    top: (height / 3.5),
+                  }
+                });
+              }}
+            />
+          )}
         </MapView>
       </View>
     )
