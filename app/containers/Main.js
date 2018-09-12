@@ -58,7 +58,7 @@ class Main extends Component {
         })
       },
       (error) => alert(JSON.stringify(error)),
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+      {enableHighAccuracy: true, timeout: 20000}
     )
     navigator.geolocation.watchPosition(
       ({coords}) => {
@@ -68,6 +68,12 @@ class Main extends Component {
           position: {
             latitude,
             longitude,
+          },
+          region: {
+            latitude,
+            longitude,
+            latitudeDelta: 0.0222,
+            longitudeDelta: 0.0121,
           }
         })
       },
@@ -128,6 +134,7 @@ class Main extends Component {
           provider={PROVIDER_GOOGLE}
           style={styles.map}
           initialRegion={region}
+          region={region}
           onPress={this.onMapPress}
           ref={c => this.mapView = c}
         >

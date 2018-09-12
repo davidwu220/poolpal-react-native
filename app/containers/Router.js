@@ -15,7 +15,7 @@ class AppRouter extends Component {
         <Modal hideNavBar>
           <Scene key={'root'}>
             <Drawer key={'drawer'} contentComponent={DrawerContent} drawerLockMode={'locked-closed'} drawerWidth={ width*0.8 } hideDrawerButton hideNavBar>
-              <Scene initial key={'main'} component={DrawerContent} title={'Main'} hideNavBar />
+              <Scene initial key={'main'} component={Main} title={'Main'} hideNavBar />
             </Drawer>
           </Scene>
 
