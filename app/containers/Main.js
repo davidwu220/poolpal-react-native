@@ -30,10 +30,10 @@ class Main extends Component {
     sourceText: 'Work',
     destinationText: '',
     coordinates: [
-      {
-        latitude: 34.031684,
-        longitude: -118.457605
-      }
+      // {
+      //   latitude: 34.031684,
+      //   longitude: -118.457605
+      // }
     ],
   }
 
@@ -60,6 +60,26 @@ class Main extends Component {
       },
       (error) => alert(JSON.stringify(error)),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    )
+    navigator.geolocation.watchPosition(
+      ({coords}) => {
+        const {latitude, longitude} = coords
+    
+        this.setState({
+          position: {
+            latitude,
+            longitude,
+          },
+          region: {
+            latitude,
+            longitude,
+            latitudeDelta: 0.0222,
+            longitudeDelta: 0.0121,
+          }
+        })
+      },
+      (error) => alert(JSON.stringify(error)),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 0}
     )
   }
 
