@@ -18,7 +18,7 @@ Clone this repo and run
 npm install
 ```
 
-**You will need to follow the official [installation guide](https://github.com/react-community/react-native-maps/blob/master/docs/installation.md) to configure the application.**
+**You will need to follow the official `react-native-maps` [installation guide](https://github.com/react-community/react-native-maps/blob/master/docs/installation.md) to configure the application.**
 
 ## To run this application in development mode
 
